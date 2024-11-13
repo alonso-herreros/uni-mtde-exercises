@@ -10,7 +10,8 @@ $$
 \global\def\Var#1{\mathrm{Var} \left\{#1\right\}}
 \global\def\Cov{\mathrm{Cov}}
 \global\def\sgn{\mathrm{sgn}}
-\global\def\dec#1#2{\enspace\overset{#1}{\underset{#2}{≶}}\enspace}
+\global\def\declg#1#2{\enspace\overset{#1}{\underset{#2}{\lessgtr}}\enspace}
+\global\def\decgl#1#2{\enspace\overset{#1}{\underset{#2}{\gtrless}}\enspace}
 \global\def\est#1#2{\hat{#1}_{\text{#2}}}
 \global\def\ML#1{\est{#1}{ML}}
 \global\def\MAP#1{\est{#1}{MAP}}
@@ -26,11 +27,16 @@ $$
     * [Question 2.b](#question-2b)
     * [Question 2.c](#question-2c)
     * [Question 2.d](#question-2d)
-* [Exercise 11](#exercise-11)
+* [Exercise 11 ✓](#exercise-11-)
     * [Question 11.a](#question-11a)
     * [Question 11.b](#question-11b)
     * [Question 11.c](#question-11c)
     * [Question 11.d](#question-11d)
+* [Exercise 22 ✓](#exercise-22-)
+    * [Question 11.a](#question-11a-1)
+    * [Question 11.b](#question-11b-1)
+    * [Question 11.c](#question-11c-1)
+    * [Question 11.d](#question-11d-1)
 
 ---
 
@@ -81,7 +87,7 @@ $$
 
 ### Question 2.d
 
-## Exercise 11
+## Exercise 11 ✓
 
 We have a binary decision problem with likelihoods:
 
@@ -160,7 +166,7 @@ sufficient statistic for the decision. Obtain the likelihoods of hypotheses $H =
 > In the end,
 >
 > $$
-> Z \dec{D_1}{D_0} m
+> Z \decgl{D_1}{D_0} m
 > $$
 
 ### Question 11.c
@@ -230,3 +236,170 @@ with coordinate axis $X_1 − X_2$.
 > * $ρ=1 ⟹ P_e = 1- F\left(\frac{m}{2}\right) = 1 - F(0.5m)$
 >
 > It seems that the probability of error increases with $ρ$.
+
+## Exercise 22 ✓
+
+Consider a binary decision problem described by
+
+$$
+\begin{aligned}
+    p_{X|H}(x|0) &= a_0 x^2 & |x| < 1 \\
+    p_{X|H}(x|1) &= a_1 (3 − |x|) & |x| < 3
+\end{aligned}
+$$
+
+where $a_0$ and $a_1$ are constants, with the same a priori probabilities for
+the two hypotheses, and where the following cost policy is used: $c_{00} =
+c_{11} = 0, c_{10} = c_{01} = c$ with $c > 0$.
+
+### Question 11.a
+Calculate constants $a_0$ and $a_1$.
+
+> **Answer** (class notes)
+
+$a_0$
+
+$$
+\begin{aligned}
+    ∫_{(x)} p(x|0) dx &= \\
+    1∫_{-1}^1 a_0 x^2 dx &= 1 \\
+    a_0 \frac{x^2}{3} \Big|_{x=-1}^1 &= 1 \\
+    \boxed{a_0 = \frac{3}{2}}
+\end{aligned}
+$$
+
+$a_1$
+
+$$
+\begin{aligned}
+    ∫_{(x)} p(x|1) dx &= 1 \\
+    ∫_{-3}^3 a_1 (3 - |x|) dx &= 1 \\
+    2 ∫_{0}^3 a_1 (3 - x) dx &= 1 \\
+    2 a_1 \left[3x - \frac{x^2}{2}\right] \Big|_{x=0}^3 &= 1 \\
+    \boxed{a_1 = \frac{1}{9}}
+\end{aligned}
+$$
+
+### Question 11.b
+Determine the Bayes optimal classifier.
+
+> **Answer** (class notes)
+>
+> MAP decider
+>
+> $$
+> \begin{aligned}
+>     \frac{p(x|1)}{p(x|0)} &\decgl{D_1}{D_0} \frac{c_{10} - c_{00}}{c_{01} - c_{11}} \frac{p_H(0)}{p_H(1)} \\
+>     \frac{p(x|1)}{p(x|0)} &\decgl{D_1}{D_0} 1 \\
+>     \frac{\frac{1}{9} (3-|x|)}{\frac{3}{2}x^2} &\decgl{D_1}{D_0} 1
+> \end{aligned}
+> $$
+>
+> For $0<x<1$
+>
+> $$
+> \begin{aligned}
+>     \frac{\frac{1}{9}(3-x)}{\frac{3}{2}x^2} &\decgl{D_1}{D_0} 1
+>     \frac{2}{27}(3-x) &\decgl{D_1}{D_0} x^2
+>     -x^2 - \frac{2}{27}x + \frac{6}{27} &\decgl{D_1}{D_0} 0
+> \end{aligned}
+> $$
+>
+> Solving the second degree equation
+>
+> $$
+> \begin{aligned}
+>     x &= \frac{-\frac{2}{27} ± \sqrt{\frac{4}{479}+ \frac{24}{27}}}{2} \\
+>     &= 0.4358 \text{ or } \cancel{-0.3117}
+> \end{aligned}
+> $$
+>
+> So,
+>
+> $$
+> \boxed{
+> \begin{cases}
+>     |x| < 1 & ⟹ |x| \decgl{D_0}{D_1} 0.4358 \\
+>     1 < |x| < 3 & ⟹ D_1
+> \end{cases}
+> }
+> $$
+
+### Question 11.c
+Calculate the probability of error of this decider.
+
+> **Answer** (class notes)
+>
+> $$
+> \begin{aligned}
+>     P_e &= P_H(0) P_{FA} + P_H(1) P_M \\
+>     &= \frac{1}{2} P_{FA} + \frac{1}{2} P_M
+> \end{aligned}
+> $$
+>
+> $$
+> \begin{aligned}
+>     P_{FA} &= P_{D|H} (1|0) \\
+>     &= 2 ∫_0^{0.4358} \frac{3}{2}x^2 dx \\
+>     &= 2 ⋅ \frac{3}{2⋅3} x^3 \Big|_{x=0}^{0.4358} \\
+>     &= 0.08276
+> \end{aligned}
+> $$
+>
+> $$
+> \begin{aligned}
+>     P_M &= P_{D|H} (0|1) \\
+>     &= 2 ∫_{0.4358}^1 \frac{1}{9} (3-x) dx \\
+>     &= \frac{2}{9} \left(3x - \frac{x^2}{2}\right) \Big|_{x=0.4358}^1 \\
+>     &= 0.2861
+> \end{aligned}
+> $$
+
+### Question 11.d
+Design the Neyman-Pearson decider that guarantees a PFA not larger than a
+pre-established value
+
+> **Answer** (class notes)
+>
+> Our constraint is:
+>
+> $$
+> P_{FA} ≤ α
+> $$
+>
+> For $|x| < 1$:
+>
+> $$
+> \begin{aligned}
+>     \frac{p(x|1)}{p(x|0)} &\decgl{D_1}{D_0} η \\
+>     \frac{\frac{1}{9}(3-|x|)}{\frac{3}{2}x^2} &\decgl{D_1}{D_0} η \\
+>     |x| &\decgl{D_0}{D_1} η'
+> \end{aligned}
+> $$
+>
+> Applying our constraint:
+>
+> $$
+> \begin{aligned}
+>     P_{FA} &= α
+>     ∫_{D_1} p(x|0) dx &= α\\
+>     2 ∫_0^{η'} \frac{3}{2}x^2 dx &= α \\
+>     x^3 \Big|_{x=0}^{η'} &= α \\
+>     η' &= \sqrt[3]{α}
+> \end{aligned}
+> $$
+>
+> Therefore,
+>
+> $$
+> |x| \decgl{D_0}{D_1} \sqrt[3]{α}
+> $$
+>
+> Finally:
+>
+> $$
+> \begin{cases}
+>     |x| < 1 & ⟹ |x| \decgl{D_0}{D_1} \sqrt[3]{α} \\
+>     1 < |x| < 3 & ⟹ D_1
+> \end{cases}
+> $$
